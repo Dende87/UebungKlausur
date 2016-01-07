@@ -5,17 +5,38 @@ public class Lampenspiel {
 	public static void main(String[] args) {
 
 		int spielfeldSize = (IO.readInt("Feldgroesse (2<n<10): "));
+		
+		while(spielfeldSize < 2 || spielfeldSize > 10){
+			IO.println("Fehlerhafte eingabe! Bitte erneut eingeben.");
+			spielfeldSize = (IO.readInt("Feldgroesse (2<n<10): "));
+		}
+		
 		boolean[][] lampenfeld = new boolean[spielfeldSize][spielfeldSize];
 		ausgabeSpielfeld(lampenfeld);
 
 		while (!alleLampenAn(lampenfeld)) {
+			
 			int reihe = IO.readInt("Reihe angeben (0<r<" + spielfeldSize + "): ");
-			int spalte = IO.readInt("Spalte angeben (0<r<" + spielfeldSize + "): ");
-
+			while(!checkEingabe(reihe, spielfeldSize)){
+				reihe = IO.readInt("Reihe angeben (0<r<" + spielfeldSize + "): ");	
+			}
+			int spalte = IO.readInt("Spalte angeben (0<s<" + spielfeldSize + "): ");
+			while(!checkEingabe(spalte, spielfeldSize)){
+				spalte = IO.readInt("Reihe angeben (0<r<" + spielfeldSize + "): ");
+			}
+			
 			setzeLampe(reihe, spalte, lampenfeld);
 			ausgabeSpielfeld(lampenfeld);
 		}
 
+	}
+
+	private static boolean checkEingabe(int eingabe, int spielfeldSize) {
+		if(eingabe < 0 || eingabe >= spielfeldSize){
+			IO.println("Fehlerhafte eingabe!");
+		return false;
+		}
+		return true;
 	}
 
 	private static boolean alleLampenAn(boolean[][] lampenfeld) {
