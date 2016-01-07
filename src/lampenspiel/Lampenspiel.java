@@ -4,25 +4,15 @@ public class Lampenspiel {
 
 	public static void main(String[] args) {
 
-		int spielfeldSize = (IO.readInt("Feldgroesse (2<n<10): "));
-
-		while (spielfeldSize < 2 || spielfeldSize > 10) {
-			IO.println("Fehlerhafte eingabe! Bitte erneut eingeben.");
-			spielfeldSize = (IO.readInt("Feldgroesse (2<n<10): "));
-		}
-
-		boolean[][] lampenfeld = new boolean[spielfeldSize][spielfeldSize];
-
-		for (boolean[] i : lampenfeld) {
-			java.util.Arrays.fill(i, false);
-		}
-
+		int spielfeldSize = getSpielfeldSize(); 
+		boolean[][] lampenfeld = initLampenfeld(spielfeldSize);
+		
 		ausgabeSpielfeld(lampenfeld);
 
 		int[] spielzug = new int[2]; // 0 = reihe 1 = spalte
 		while (!alleLampenAn(lampenfeld)) {
 
-			spielzug = spielzugeinlesen(spielzug, spielfeldSize);
+			spielzug = spielzugEinlesen(spielzug, spielfeldSize);
 
 			setzeLampe(spielzug, lampenfeld);
 			ausgabeSpielfeld(lampenfeld);
@@ -30,7 +20,29 @@ public class Lampenspiel {
 
 	}
 
-	private static int[] spielzugeinlesen(int[] spielzug, int spielfeldSize) {
+	private static boolean[][] initLampenfeld(int spielfeldSize) {
+		
+		boolean[][]lampenfeld  = new boolean[spielfeldSize][spielfeldSize];
+
+		for (boolean[] i : lampenfeld) {
+			java.util.Arrays.fill(i, false);
+		}
+		
+		return lampenfeld;
+	}
+
+	private static int getSpielfeldSize() {
+		int size = IO.readInt("Feldgroesse (2<n<10): ");
+		
+		while (size < 3 || size > 9) {
+			IO.println("Fehlerhafte eingabe! Bitte erneut eingeben.");
+			size = (IO.readInt("Feldgroesse (2<n<10): "));
+		}
+		
+		return size;
+	}
+
+	private static int[] spielzugEinlesen(int[] spielzug, int spielfeldSize) {
 
 		int reihe = IO.readInt("Reihe angeben (0<r<" + spielfeldSize + "): ");
 		while (!checkEingabe(reihe, spielfeldSize)) {
