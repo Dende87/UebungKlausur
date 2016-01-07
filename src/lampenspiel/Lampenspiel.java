@@ -5,6 +5,7 @@ public class Lampenspiel {
 	public static void main(String[] args) {
 
 		int spielfeldSize = (IO.readInt("Feldgroesse (2<n<10): "));
+		int[] spielzug = new int[2]; // 0 = reihe 1 = spalte
 		
 		while(spielfeldSize < 2 || spielfeldSize > 10){
 			IO.println("Fehlerhafte eingabe! Bitte erneut eingeben.");
@@ -16,19 +17,28 @@ public class Lampenspiel {
 
 		while (!alleLampenAn(lampenfeld)) {
 			
-			int reihe = IO.readInt("Reihe angeben (0<r<" + spielfeldSize + "): ");
-			while(!checkEingabe(reihe, spielfeldSize)){
-				reihe = IO.readInt("Reihe angeben (0<r<" + spielfeldSize + "): ");	
-			}
-			int spalte = IO.readInt("Spalte angeben (0<s<" + spielfeldSize + "): ");
-			while(!checkEingabe(spalte, spielfeldSize)){
-				spalte = IO.readInt("Reihe angeben (0<r<" + spielfeldSize + "): ");
-			}
-			
-			setzeLampe(reihe, spalte, lampenfeld);
+			spielzug = spielzugeinlesen(spielzug, spielfeldSize);
+						
+			setzeLampe(spielzug[0], spielzug[1], lampenfeld);
 			ausgabeSpielfeld(lampenfeld);
 		}
 
+	}
+
+	private static int[] spielzugeinlesen(int[] spielzug, int spielfeldSize) {
+		
+		int reihe = IO.readInt("Reihe angeben (0<r<" + spielfeldSize + "): ");
+		while(!checkEingabe(reihe, spielfeldSize)){
+			reihe = IO.readInt("Reihe angeben (0<r<" + spielfeldSize + "): ");	
+		}
+		int spalte = IO.readInt("Spalte angeben (0<s<" + spielfeldSize + "): ");
+		while(!checkEingabe(spalte, spielfeldSize)){
+			spalte = IO.readInt("Reihe angeben (0<r<" + spielfeldSize + "): ");
+		}
+		spielzug[0] = reihe;
+		spielzug[1] = spalte;
+		
+		return spielzug;	
 	}
 
 	private static boolean checkEingabe(int eingabe, int spielfeldSize) {
